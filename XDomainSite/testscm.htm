@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="jquery-1.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            var url = 'https://suwatchlg01.scm.kudu1.antares-test.windows-int.net/settings?version=2';
+
+            $('.date').text(new Date().toLocaleString());
+
+            $('.url').text(url);
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                processData: true,
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                headers: {
+                    "Authorization": "Basic JHN1d2F0Y2hMRzAxOmVEaktpa0c1R2F6WmNnYWdSZXdkc3VhYU5ERmY2N0d4a2Vna2wweDRYNXZLa2FaQmZlUFl0WmEwdVhmcA=="
+                },
+                success: function (data) {
+                    $('.content').text(JSON.stringify(data));
+                },
+                error: function (jqXHR, text, error) {
+                    $('.content').text(text + ',' + error);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1 class="date"></h1>
+    <h1 class="url"></h1>
+    <div class="content"></div>
+</body>
+</html>

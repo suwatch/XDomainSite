@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="jquery-1.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            //debugger
+            $('.date').text(new Date().toLocaleString());
+
+            var url = "http://sso01.kudu1.antares-test.windows-int.net/payload.aspx";
+            var url1 = "http://sso01.kudu1.antares-test.windows-int.net/payload2.aspx";
+
+            var ie10 = window.navigator.userAgent.match(/MSIE 1(\d+)/)
+
+            if (window.XDomainRequest && !ie10) {
+
+                $('.network').text("XDomainRequest " + url);
+
+                var xdr = new XDomainRequest();
+                xdr.open("GET", url);
+                xdr.onload = function () {
+                    $('.content').html(xdr.responseText);
+                };
+                xdr.onerror = function (evt) {
+                    $('.content').text(evt.type);
+                }
+                xdr.send();
+
+                xdr = new XDomainRequest();
+                xdr.open("GET", url1);
+                xdr.onload = function () {
+                    $('.content1').html(xdr.responseText);
+                };
+                xdr.onerror = function (evt) {
+                    $('.content1').text(evt.type);
+                }
+                xdr.send();
+
+            } else {
+
+                debugger
+                $('.network').text("$ajax " + url);
+                /*
+
+xhr.open("GET", myurl, false, myusername, mypwd);
+xhr.withCredentials = true;
+
+                var invocation = new XMLHttpRequest();
+                //invocation.open('GET', url1, true);
+                //invocation.setRequestHeader('Authorization', 'Basic 1234');
+                //invocation.setRequestHeader('Access-Control-Request-Headers', 'Authorization');
+                //invocation.setRequestHeader('Access-Control-Request-Method', 'GET');
+                ////invocation.setRequestHeader('Content-Type', 'application/json');
+                ////invocation.setRequestHeader("Content-length", params.length);
+                //invocation.withCredentials = true;
+                //invocation.onreadystatechange = function () {
+                //    if (invocation.readyState == 4) {
+                //        alert(invocation.responseText);
+                //    }
+                //};
+                var body = '<?xml version="1.0"?><person><name>Arun</name></person>';
+                invocation.open('POST', url1, true);
+                //invocation.setRequestHeader('Authorization', 'Basic 1234');
+                invocation.setRequestHeader('Content-Type', 'application/xml');
+                invocation.onreadystatechange = function () {
+                    if (invocation.readyState == 4) {
+                        alert(invocation.responseText);
+                    }
+                };
+                invocation.send(body);
+                */
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    processData: true,
+                    data: {},
+                    dataType: "text",
+                    headers: {
+                        "Authorization": "Basic dXNlcjpwYXNzd29yZA==",
+                        "Authorizationx": "Bearer 12345"
+                //"Access-Control-Allow-Credentials": "true"
+                    },
+                    success: function (data) {
+                        $('.content').html(data);
+                    },
+                    error: function (jqXHR, text, error) {
+                        $('.content').text(text + ',' + error);
+                    }
+                });
+
+                $.ajax({
+                    type: 'GET',
+                    url: url1,
+                    processData: true,
+                    data: {},
+                    dataType: "text",
+                    headers: {
+                        "Authorization": "Basic dXNlcjpwYXNzd29yZA==",
+                        "Authorizationx": "Bearer 12345"
+                        //"Access-Control-Allow-Credentials": "true"
+                    },
+                    success: function (data) {
+                        $('.content1').html(data);
+                    },
+                    error: function (jqXHR, text, error) {
+                        $('.content1').text(text + ',' + error);
+                    }
+                });
+                
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1 class="date"></h1>
+    <div class="network"></div>
+    <div class="content"></div>
+    <div class="network1"></div>
+    <div class="content1"></div>
+</body>
+</html>

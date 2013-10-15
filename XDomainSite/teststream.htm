@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="jquery-1.7.1.js"></script>
+    <script>
+        var println = function (str) {
+            if (str) $(".content").html(str + "<br/>");
+        }
+
+        $(document).ready(function () {
+            var url = 'https://suwatchlg01.scm.kudu1.antares-test.windows-int.net/logstream';
+
+            $('.date').text(new Date().toLocaleString());
+
+            $('.url').text(url);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                println(xhr.responseText);
+            };
+            xhr.onprogress = function () {
+                println(xhr.responseText);
+            };
+            xhr.onerror = function () {
+                println("ERROR");
+            };
+            xhr.setRequestHeader('Authorization', 'Basic JHN1d2F0Y2hMRzAxOmVEaktpa0c1R2F6WmNnYWdSZXdkc3VhYU5ERmY2N0d4a2Vna2wweDRYNXZLa2FaQmZlUFl0WmEwdVhmcA==');
+            xhr.send();
+        });
+    </script>
+</head>
+<body>
+    <h1 class="date"></h1>
+    <h1 class="url"></h1>
+    <div class="content"></div>
+</body>
+</html>
